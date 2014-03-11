@@ -30,11 +30,12 @@ class TheTaleApi(object):
 
     def make_request(self, path, method='get', params=None, **kwargs):
         params = params or {}
-        params.update(self.default_params)
+        actual_params = dict(self.default_params)
+        actual_params.update(self.default_params)
 
         url = '{0}{1}'.format(self.host, path)
         method_callable = getattr(self.session, method)
-        response = method_callable(url, params=params, **kwargs)
+        response = method_callable(url, params=actual_params, **kwargs)
         logger.debug('Getting %s', response.request.url)
         logger.debug('response: %s', response.text)
 
