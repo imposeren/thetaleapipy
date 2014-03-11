@@ -18,7 +18,7 @@ SERVICE = 'the-tale-api'
 LOW_HEALTH = 120
 NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
-MIN_ENERGY = 4
+MIN_ENERGY = 2
 
 import logging
 
