@@ -25,7 +25,7 @@ def simple_bot(api, action=None):
 
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
-                # no time to check if it's a battle
+                # no time to check if it's a battle or not
                 api.use_help()
                 return
             old_health = current_health
