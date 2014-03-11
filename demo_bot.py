@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+"""
+A demo script that shows how to utilize api. It checks if hero is loosing health and
+if health is lower than some limit than tries to use help for hero.
+
+Usage:
+  python demo_bot 'youraddr@mail.domain'
+
+"""
 import sys
 import keyring
 import getpass
@@ -22,16 +30,18 @@ def simple_bot(api, action=None):
             current_health <= LOW_HEALTH
             # possibly should also check hero['action'] ???
         )
+        print(u"Current hero's health: {0}".format(current_health))
 
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
                 # no time to check if it's a battle or not
-                api.use_help()
+                if hero['energy']['value'] >= MIN_ENERGY:
+                    print(u'Helping hero')
+                    api.use_help()
                 return
             old_health = current_health
 
             # it's hard to parse hero['action'] now, so let's wait and check if health is reduced
-            print(u"Current hero's health: {0}".format(current_health))
             print(u'Waiting one turn')
             time.sleep(SLEEP_TIME)
             state = api.get_game_info()['data']
