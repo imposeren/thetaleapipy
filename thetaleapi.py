@@ -31,7 +31,7 @@ class TheTaleApi(object):
     def make_request(self, path, method='get', params=None, **kwargs):
         params = params or {}
         actual_params = dict(self.default_params)
-        actual_params.update(self.default_params)
+        actual_params.update(params)
 
         url = '{0}{1}'.format(self.host, path)
         method_callable = getattr(self.session, method)
