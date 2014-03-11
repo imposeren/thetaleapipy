@@ -7,7 +7,7 @@ import time
 from thetaleapi import TheTaleApi
 
 SERVICE = 'the-tale-api'
-LOW_HEALTH = 500
+LOW_HEALTH = 120
 NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
 MIN_ENERGY = 4
@@ -22,6 +22,7 @@ def simple_bot(api, action=None):
             current_health <= LOW_HEALTH
             # possibly should also check hero['action'] ???
         )
+
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
                 # no time to check if it's a battle
