@@ -57,14 +57,17 @@ class TheTaleApi(object):
 
         return response
 
-    def game_info(self):
+    def get_game_info(self):
         return self.make_request('/game/api/info').json()
 
     def get_health(self):
-        return self.game_info()['data']['account']['hero']['base']['health']
+        return self.get_game_info()['data']['account']['hero']['base']['health']
 
-    def use_ability(self, ability_name='help'):
+    def use_ability(self, ability_name):
         return self.make_request('/game/abilities/{0}/api/use'.format(ability_name), 'post').json()
+
+    def use_help(self):
+        return self.use_ability('help')
 
     def logout(self):
         return self.make_request('/accounts/auth/api/logout', 'post').json()
