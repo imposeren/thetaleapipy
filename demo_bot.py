@@ -20,6 +20,15 @@ NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
 MIN_ENERGY = 4
 
+import logging
+
+logger = logging.getLogger(__name__)
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+
+logger.addHandler(console)
+logger.setLevel(logging.WARNING)
+
 
 def simple_bot(api, action=None):
     state = api.get_game_info()['data']
@@ -30,29 +39,29 @@ def simple_bot(api, action=None):
             current_health <= LOW_HEALTH
             # possibly should also check hero['action'] ???
         )
-        print(u"Current hero's health: {0}".format(current_health))
+        logging.info(u"Current hero's health: {0}".format(current_health))
 
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
                 # no time to check if it's a battle or not
                 if hero['energy']['value'] >= MIN_ENERGY:
-                    print(u'Helping hero')
+                    logging.warning(u'Helping hero')
                     api.use_help()
                 return
             old_health = current_health
 
             # it's hard to parse hero['action'] now, so let's wait and check if health is reduced
-            print(u'Waiting one turn')
+            logging.info(u'Waiting one turn')
             time.sleep(SLEEP_TIME)
             state = api.get_game_info()['data']
 
             hero = state['account']['hero']
             current_health = hero['base']['health']
-            print(u"Current hero's health: {0}".format(current_health))
+            logging.info(u"Current hero's health: {0}".format(current_health))
             if current_health < old_health:
-                print(u'Hero is loosing health')
+                logging.warning(u'Hero is loosing health')
                 if should_help and hero['energy']['value'] >= MIN_ENERGY:
-                    print(u'Helping hero')
+                    logging.warning(u'Helping hero')
                     api.use_help()
 
 
