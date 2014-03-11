@@ -1,0 +1,13 @@
+#
+# Excluded objects
+#
+
+.*
+*~
+*.py[co]
+*.sublime*
+
+#
+# Included objects
+#
+!.gitignore
