@@ -11,7 +11,7 @@ import sys
 import keyring
 import getpass
 import time
-from os.path import expanduser
+#from os.path import expanduser
 
 from thetaleapi import TheTaleApi
 
@@ -20,6 +20,7 @@ LOW_HEALTH = 120
 NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
 MIN_ENERGY = 2
+GENEROUS_ENERGY = 7
 
 import logging
 
@@ -53,7 +54,7 @@ def simple_bot(api, action=None):
         )
         be_generous = (
             current_health <= 0.6 * get_max_hp(state) and
-            get_energy(state) >= 8
+            get_energy(state) >= GENEROUS_ENERGY
         )
         logger.info(u"Current hero's health: {0}".format(current_health))
         logger.info(u"Current hero's position: {0}".format(get_hero(state)['position']))
@@ -87,14 +88,14 @@ def simple_bot(api, action=None):
 
 if __name__ == '__main__':
     console = logging.StreamHandler()
-    console.setLevel(logging.ERROR)
-    file_handler = logging.FileHandler(expanduser('./.the-tale.log'))
+    console.setLevel(logging.WARNING)
+    #file_handler = logging.FileHandler(expanduser('./.the-tale.log'))
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
+    #file_handler.setFormatter(formatter)
     console.setFormatter(formatter)
 
     logger.addHandler(console)
-    logger.addHandler(file_handler)
+    #logger.addHandler(file_handler)
     logger.setLevel(logging.DEBUG)
 
     if len(sys.argv) == 3:
@@ -112,4 +113,4 @@ if __name__ == '__main__':
         logger.error(auth_result)
     simple_bot(api, action)
     api.logout()
-    file_handler.close()
+    #file_handler.close()
