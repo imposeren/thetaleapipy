@@ -6,6 +6,9 @@ if health is lower than some limit than tries to use help for hero.
 Usage:
   python demo_bot 'youraddr@mail.domain'
 
+this script can be used in cron if you will specify env variables like:
+DISPLAY and DBUS_SESSION_BUS_ADDRESS
+
 """
 import sys
 import keyring
