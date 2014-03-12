@@ -75,7 +75,6 @@ def simple_bot(api, action=None):
             state = api.get_game_info()['data']
 
             current_health = get_hp(state)
-            logger.info(u"Current hero's health: {0}".format(current_health))
             if current_health < old_health:
                 logger.warning(u'Hero is loosing health')
                 realy_heal = (
@@ -83,6 +82,7 @@ def simple_bot(api, action=None):
                     or be_generous
                 )
                 if realy_heal:
+                    logger.warning(u"Current hero's health: {0}".format(current_health))
                     logger.warning(u'Helping hero')
                     api.use_help()
 
