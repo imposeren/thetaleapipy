@@ -21,6 +21,7 @@ NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
 MIN_ENERGY = 2
 GENEROUS_ENERGY = 7
+GENEROUS_HP_FRACTION = 0.6
 
 import logging
 
@@ -53,7 +54,7 @@ def simple_bot(api, action=None):
             # possibly should also check hero['action'] ???
         )
         be_generous = (
-            current_health <= 0.6 * get_max_hp(state) and
+            current_health <= GENEROUS_HP_FRACTION * get_max_hp(state) and
             get_energy(state) >= GENEROUS_ENERGY
         )
         logger.info(u"Current hero's health: {0}".format(current_health))
