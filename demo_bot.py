@@ -74,7 +74,7 @@ def simple_bot(api, action=None):
             current_health = get_hp(state)
             logger.info(u"Current hero's health: {0}".format(current_health))
             if current_health < old_health:
-                logging.warning(u'Hero is loosing health')
+                logger.warning(u'Hero is loosing health')
                 realy_heal = (
                     should_help and get_energy(state) >= MIN_ENERGY
                     or be_generous
