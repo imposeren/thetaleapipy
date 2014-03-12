@@ -56,6 +56,7 @@ def simple_bot(api, action=None):
             get_energy(state) >= 8
         )
         logger.info(u"Current hero's health: {0}".format(current_health))
+        logger.info(u"Current hero's position: {0}".format(get_hero(state)['position']))
 
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
@@ -86,8 +87,11 @@ def simple_bot(api, action=None):
 
 if __name__ == '__main__':
     console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
+    console.setLevel(logging.ERROR)
     file_handler = logging.FileHandler(expanduser('./.the-tale.log'))
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console.setFormatter(formatter)
 
     logger.addHandler(console)
     logger.addHandler(file_handler)
