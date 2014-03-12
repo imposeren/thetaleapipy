@@ -39,6 +39,10 @@ def simple_bot(api, action=None):
             current_health <= LOW_HEALTH
             # possibly should also check hero['action'] ???
         )
+        be_generous = (
+            current_health <= 0.6 * hero['base']['max_health'] and
+            hero['energy']['value'] >= 8
+        )
         logging.info(u"Current hero's health: {0}".format(current_health))
 
         if should_help or action == 'check':
@@ -60,7 +64,11 @@ def simple_bot(api, action=None):
             logging.info(u"Current hero's health: {0}".format(current_health))
             if current_health < old_health:
                 logging.warning(u'Hero is loosing health')
-                if should_help and hero['energy']['value'] >= MIN_ENERGY:
+                realy_heal = (
+                    should_help and hero['energy']['value'] >= MIN_ENERGY
+                    or be_generous
+                )
+                if realy_heal:
                     logging.warning(u'Helping hero')
                     api.use_help()
 
