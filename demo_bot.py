@@ -22,7 +22,7 @@ SERVICE = 'the-tale-api'
 LOW_HEALTH = 120
 NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
-MIN_ENERGY = 2
+MIN_ENERGY = 4
 GENEROUS_ENERGY = 7
 GENEROUS_HP_FRACTION = 0.6
 
@@ -44,7 +44,7 @@ def get_max_hp(state):
 
 
 def get_energy(state):
-    return get_hero(state)['base']['health']
+    return get_hero(state)['energy']['value']
 
 
 def simple_bot(api, action=None):
