@@ -4,7 +4,7 @@ A demo script that shows how to utilize api. It checks if hero is loosing health
 if health is lower than some limit than tries to use help for hero.
 
 Usage:
-  python demo_bot 'youraddr@mail.domain'
+  python demo_bot.py 'youraddr@mail.domain'
 
 this script can be used in cron if you will specify env variables like:
 DISPLAY and DBUS_SESSION_BUS_ADDRESS
@@ -19,11 +19,11 @@ import time
 from thetaleapi import TheTaleApi
 
 SERVICE = 'the-tale-api'
-LOW_HEALTH = 120
+LOW_HEALTH = 280
 NO_TIME_TO_CHECK_HEALTH = 50
 SLEEP_TIME = 18
 MIN_ENERGY = 4
-GENEROUS_ENERGY = 7
+GENEROUS_ENERGY = MIN_ENERGY + 4
 GENEROUS_HP_FRACTION = 0.6
 
 import logging
@@ -43,8 +43,8 @@ def get_max_hp(state):
     return get_hero(state)['base']['max_health']
 
 
-def get_energy(state):
-    return get_hero(state)['energy']['value']
+def get_energy(state, kind='value'):
+    return get_hero(state)['energy'][kind]
 
 
 def simple_bot(api, action=None):
@@ -69,7 +69,10 @@ def simple_bot(api, action=None):
                 if get_energy(state) >= MIN_ENERGY:
                     logger.warning(u'Helping hero')
                     api.use_help()
-                return
+                elif current_health == 1 and get_energy(state, 'bonus') >= 10:
+                    logger.warning(u'Hero is dead. Helping...')
+                    api.use_help()
+                return None
             old_health = current_health
 
             # it's hard to parse hero['action'] now, so let's wait and check if health is reduced
@@ -79,12 +82,12 @@ def simple_bot(api, action=None):
 
             current_health = get_hp(state)
             if current_health < old_health:
-                logger.warning(u'Hero is loosing health')
                 realy_heal = (
                     should_help and get_energy(state) >= MIN_ENERGY
                     or be_generous
                 )
                 if realy_heal:
+                    logger.warning(u'Hero is loosing health')
                     logger.warning(u"Current hero's health: {0}".format(current_health))
                     logger.warning(u'Helping hero')
                     api.use_help()
@@ -115,6 +118,7 @@ if __name__ == '__main__':
     auth_result = api.auth(email, password).json()
     if auth_result['status'] != 'ok':
         logger.error(auth_result)
+
     simple_bot(api, action)
     api.logout()
     #file_handler.close()
