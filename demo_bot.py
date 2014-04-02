@@ -25,6 +25,7 @@ SLEEP_TIME = 18
 MIN_ENERGY = 4
 GENEROUS_ENERGY = MIN_ENERGY + 4
 GENEROUS_HP_FRACTION = 0.6
+BONUS_ENERGY_MINIMUM = 10
 
 import logging
 
@@ -69,7 +70,7 @@ def simple_bot(api, action=None):
                 if get_energy(state) >= MIN_ENERGY:
                     logger.warning(u'Helping hero')
                     api.use_help()
-                elif current_health == 1 and get_energy(state, 'bonus') >= 10:
+                elif current_health == 1 and get_energy(state, 'bonus') >= BONUS_ENERGY_MINIMUM:
                     logger.warning(u'Hero is dead. Helping...')
                     api.use_help()
                 return None
