@@ -20,13 +20,13 @@ from thetaleapi import TheTaleApi
 
 # note: HP values are in percents!
 SERVICE = 'the-tale-api'
-LOW_HEALTH = 3.5
-NO_TIME_TO_CHECK_HEALTH = 17
+LOW_HEALTH = 35
+NO_TIME_TO_CHECK_HEALTH = 13
 SLEEP_TIME = 18
 MIN_ENERGY = 8
 RESURECT_MIN_ENERGY = 2
 GENEROUS_ENERGY = MIN_ENERGY + 4
-GENEROUS_HP_FRACTION = 0.6
+GENEROUS_HP = 60
 BONUS_ENERGY_MINIMUM = 10
 
 import logging
@@ -63,7 +63,7 @@ def simple_bot(api, action=None):
             # possibly should also check hero['action'] ???
         )
         be_generous = (
-            current_health <= GENEROUS_HP_FRACTION * get_max_hp(state) and
+            current_health <= GENEROUS_HP and
             get_energy(state) >= GENEROUS_ENERGY
         )
         logger.info(u"Current hero's health: {0}".format(current_health))
