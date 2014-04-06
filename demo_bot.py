@@ -71,11 +71,16 @@ def simple_bot(api, action=None):
 
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
+                good_resurect_energy = (
+                    get_energy(state, 'bonus') >= BONUS_ENERGY_MINIMUM and
+                    get_energy(state) >= RESURECT_MIN_ENERGY
+                    or get_energy(state) >= 4
+                )
                 # no time to check if it's a battle or not
                 if get_energy(state) >= MIN_ENERGY:
-                    logger.warning(u'Helping hero')
+                    logger.warning(u'Health is too low! Helping hero')
                     api.use_help()
-                elif get_hp(state, False) == 1 and get_energy(state, 'bonus') >= BONUS_ENERGY_MINIMUM and get_energy(state) >= RESURECT_MIN_ENERGY:
+                elif get_hp(state, False) == 1 and good_resurect_energy:
                     logger.warning(u'Hero is dead. Helping...')
                     api.use_help()
                 return None
@@ -94,7 +99,7 @@ def simple_bot(api, action=None):
                 )
                 if realy_heal:
                     logger.warning(u'Hero is loosing health')
-                    logger.warning(u"Current hero's health: {0}".format(current_health))
+                    logger.warning(u"Current hero's health: {0}%".format(current_health))
                     logger.warning(u'Helping hero')
                     api.use_help()
 
