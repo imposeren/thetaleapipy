@@ -72,9 +72,9 @@ def simple_bot(api, action=None):
         if should_help or action == 'check':
             if current_health <= NO_TIME_TO_CHECK_HEALTH:
                 good_resurect_energy = (
+                    get_energy(state) >= 4 or
                     get_energy(state, 'bonus') >= BONUS_ENERGY_MINIMUM and
                     get_energy(state) >= RESURECT_MIN_ENERGY
-                    or get_energy(state) >= 4
                 )
                 # no time to check if it's a battle or not
                 if get_energy(state) >= MIN_ENERGY:
